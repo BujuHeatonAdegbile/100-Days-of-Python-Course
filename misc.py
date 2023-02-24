@@ -53,3 +53,5 @@ for item in password_list:
     password += item
 
 print(password)
+
+###TEST
