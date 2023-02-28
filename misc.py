@@ -1,57 +1,104 @@
-#Password Generator Project
+#############
+### DAY 7 ###
+#############
+
+# HANGMAN CHALLENGE 
+
 import random
-letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
-print("Welcome to the PyPassword Generator!")
-nr_letters = int(input("How many letters would you like in your password?\n")) 
-nr_symbols = int(input(f"How many symbols would you like?\n"))
-nr_numbers = int(input(f"How many numbers would you like?\n"))
+stages = ['''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ / \  |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ /    |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========
+''']
 
-#Eazy Level - Order not randomised:
-#e.g. 4 letter, 2 symbol, 2 number = JduE&!91
+word_list = ["building", "oven", "london", "table", "plant", "paper", "desktop", "coconut"]
 
-password = ""
+lives = 6
 
-for letter in range(1, nr_letters + 1):
-    random_letters = random.choice(letters)
-    password += random_letters
+chosen_word = random.choice(word_list)
+print(chosen_word)
+word_length = len(chosen_word)
 
-for symbol in range(1, nr_symbols + 1):
-    random_symbols = random.choice(symbols)
-    password += random_symbols
+display = []
 
-for number in range(1, nr_numbers + 1):
-    random_numbers = random.choice(numbers)
-    password += random_numbers
+for _ in range(word_length):
+    display += "_"
 
-print(password)
-#Hard Level - Order of characters randomised:
-#e.g. 4 letter, 2 symbol, 2 number = g^2jk8&P
-password_list = []
+print(display)
 
-for letter in range(1, nr_letters + 1):
-    random_letters = random.choice(letters)
-    password_list += random_letters
+end_of_game = False
 
-for symbol in range(1, nr_symbols + 1):
-    random_symbols = random.choice(symbols)
-    password_list+= random_symbols
+while end_of_game == False:
 
-for number in range(1, nr_numbers + 1):
-    random_numbers = random.choice(numbers)
-    password_list += random_numbers
+    guess = input("Guess a letter: ").lower()
 
-print(password_list)
+    for position in range(word_length):
+        letter = chosen_word[position]
+        if letter == guess:
+            display[position] = letter
 
-password = ""
+    if guess not in chosen_word:
+        lives -= 1
+        if lives == 0:
+            end_of_game = True
+            print("You Lose!")
 
-random.shuffle(password_list)
+    print(display)
 
-for item in password_list:
-    password += item
+    if "_" not in display:
+        end_of_game = True
+        print("You Win!")
 
-print(password)
-
-###TEST
+    print(stages[lives])
